@@ -21,3 +21,9 @@ class TestHackerNews2:
         rsyring = hn.User('rsyring', _user_data={'karma': 123, 'submitted': [1, 2, 3]})
         assert rsyring.karma == 123
         assert rsyring.subcount == 3
+
+    def test_mock(self):
+        with hn.mock_user(karma=123, submitted=[1, 2, 3]):
+            user = hn.User('foo')
+            assert user.karma == 123
+            assert user.subcount == 3

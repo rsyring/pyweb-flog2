@@ -1,3 +1,7 @@
+import contextlib
+
+from unittest import mock
+
 import requests
 
 
@@ -33,3 +37,11 @@ class User:
         if user_json is None:
             return None
         return user_json
+
+
+@contextlib.contextmanager
+def mock_user(**kwargs):
+    with mock.patch('flog.libs.hackernews.User.get_json', autospec=True, spec_set=True) \
+            as m_get_json:
+        m_get_json.return_value = kwargs
+        yield
