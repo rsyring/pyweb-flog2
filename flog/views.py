@@ -30,4 +30,4 @@ def hn():
     else:
         username = request.form['username']
         user = hackernews.User(username)
-        return f'HackerNews user {username} has {user.subcount} submissions and {user.karma} karma.'
+        return str(user)

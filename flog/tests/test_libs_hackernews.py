@@ -27,3 +27,8 @@ class TestHackerNews2:
             user = hn.User('foo')
             assert user.karma == 123
             assert user.subcount == 3
+
+    def test_str(self):
+        with hn.mock_user(karma=123, submitted=[1, 2, 3]):
+            user = hn.User('foo')
+            assert f'{user}' == 'HackerNews user foo has 3 submissions and 123 karma.'

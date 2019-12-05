@@ -26,6 +26,7 @@ def subcount(username):
 class User:
 
     def __init__(self, username, _user_data=None):
+        self.username = username
         self.json = _user_data or self.get_json(username)
         self.karma = self.json['karma']
         self.subcount = len(self.json['submitted'])
@@ -37,6 +38,10 @@ class User:
         if user_json is None:
             return None
         return user_json
+
+    def __str__(self):
+        return f'HackerNews user {self.username} has {self.subcount} submissions and' \
+            f' {self.karma} karma.'
 
 
 @contextlib.contextmanager

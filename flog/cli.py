@@ -10,4 +10,4 @@ cli_bp = Blueprint('cli', __name__, cli_group=None)
 @click.argument('username')
 def hn_profile(username):
     user = hn.User(username)
-    print(f'HackerNews user {username} has {user.subcount} submissions and {user.karma} karma.')
+    print(user)
