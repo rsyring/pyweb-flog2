@@ -3,6 +3,8 @@ from flask import Flask
 from flask.cli import FlaskGroup
 from flask_sqlalchemy import SQLAlchemy
 
+import flog.cli
+
 db = SQLAlchemy()
 
 
@@ -19,6 +21,7 @@ def create_app():
     db.init_app(app)
 
     app.register_blueprint(views.public)
+    app.register_blueprint(flog.cli.cli_bp)
 
     return app
 
