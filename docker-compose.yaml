@@ -13,8 +13,18 @@
 
 version: '2'
 services:
-  pals-pg:
+  flog-pg:
       image: postgres:11-alpine
       container_name: flog-pg
       ports:
         - '127.0.0.1:54321:5432'
+  flog-rabbitmq:
+    image: rabbitmq:3.8-alpine
+    container_name: flog-rabbitmq
+    ports:
+      - '127.0.0.1:56721:5672'
+  flog-redis:
+    image: redis:5-alpine
+    container_name: flog-redis
+    ports:
+      - '127.0.0.1:63791:6379'

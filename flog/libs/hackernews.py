@@ -5,6 +5,16 @@ from unittest import mock
 import requests
 
 
+def top_stories():
+    url = 'https://hacker-news.firebaseio.com/v0/topstories.json'
+    return requests.get(url).json()
+
+
+def story(story_id):
+    url = f'https://hacker-news.firebaseio.com/v0/item/{story_id}.json'
+    return requests.get(url).json()
+
+
 class User:
 
     def __init__(self, username, _user_data=None):

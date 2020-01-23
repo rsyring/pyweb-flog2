@@ -1,4 +1,5 @@
 import click
+
 from flask import Flask
 from flask.cli import FlaskGroup
 from flask_sqlalchemy import SQLAlchemy

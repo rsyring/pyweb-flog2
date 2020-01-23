@@ -1,3 +1,5 @@
+# Flog
+
 # Install & Run Tests
 
 ```
@@ -6,7 +8,7 @@ $ pip install -e .
 $ pytest
 ```
 
-# Review
+# App & Test Setup
 
 * PostgreSQL: `docker-compose up -d` or use your own server
 * Dependencies (see `requirements.txt`)

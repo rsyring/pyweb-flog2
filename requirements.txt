@@ -1,4 +1,5 @@
 # app
+dramatiq[rabbitmq, redis, watch]
 flask
 flask_sqlalchemy
 psycopg2-binary
