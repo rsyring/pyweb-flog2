@@ -34,4 +34,3 @@ def top_stories():
     # 60 second timeout (in milliseconds)
     for result in group.get_results(block=True, timeout=60_000):
         print(result)
-
