@@ -7,12 +7,12 @@ import requests
 
 def top_stories():
     url = 'https://hacker-news.firebaseio.com/v0/topstories.json'
-    return requests.get(url).json()
+    return requests.get(url, timeout=2.0).json()
 
 
 def story(story_id):
     url = f'https://hacker-news.firebaseio.com/v0/item/{story_id}.json'
-    return requests.get(url).json()
+    return requests.get(url, timeout=2.0).json()
 
 
 class User:
