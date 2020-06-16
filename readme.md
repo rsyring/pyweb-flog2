@@ -1,10 +1,10 @@
 # Flog
 
-# Install & Run Tests
+# Install Dependencies & Run Tests
 
 ```
+$ docker-compose up -d
 $ pip install -r requirements.txt
-$ pip install -e .
 $ pytest
 ```
 
@@ -28,3 +28,7 @@ $ waitress-serve --port=5000 server_flask:flask_app
 $ gunicorn -b 127.0.0.1:5000 --workers=5 --worker-class=meinheld.gmeinheld.MeinheldWorker server_falcon:falcon_app
 $ gunicorn -b 127.0.0.1:5000 --workers=5 --worker-class=meinheld.gmeinheld.MeinheldWorker server_flask:flask_app
 ```
+
+# Pythonwebconf
+
+1. Database testing configuration string

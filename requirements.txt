@@ -13,3 +13,4 @@ responses
 
 # dev environment
 flake8
+-e .
