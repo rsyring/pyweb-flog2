@@ -1,6 +1,8 @@
-# Flog
+Flog
+====
 
-# Install Dependencies & Run Tests
+Install Dependencies & Run Tests
+----------------------------------
 
 ```
 $ docker-compose up -d
@@ -8,27 +10,37 @@ $ pip install -r requirements.txt
 $ pytest
 ```
 
-# App & Test Setup
+Features
+--------
 
-* PostgreSQL: `docker-compose up -d` or use your own server
-* Dependencies (see `requirements.txt`)
-* [Flask App Factory Pattern](https://flask.palletsprojects.com/en/1.1.x/patterns/appfactories/)
-* [Flask CLI: Custom Scripts](https://flask.palletsprojects.com/en/1.1.x/cli/#custom-scripts)
-* [Pytest Fixtures](https://docs.pytest.org/en/latest/fixture.html)
-
-
-# 2/27/20
-
-```
-$ ab -t 5 -c 5 http://localhost:5000/
-
-$ waitress-serve --port=5000 server_falcon:falcon_app
-$ waitress-serve --port=5000 server_flask:flask_app
-
-$ gunicorn -b 127.0.0.1:5000 --workers=5 --worker-class=meinheld.gmeinheld.MeinheldWorker server_falcon:falcon_app
-$ gunicorn -b 127.0.0.1:5000 --workers=5 --worker-class=meinheld.gmeinheld.MeinheldWorker server_flask:flask_app
-```
-
-# Pythonwebconf
-
-1. Database testing configuration string
+- General
+    - requirements
+    - docker-compose
+    - tox & CI
+    - ease of starting tests & dev
+- App factory pattern
+    - blueprints (web & CLI)
+- CLI Integration
+    - custom command
+    - two-phase init for blueprints
+- Configuration
+    - .env & .flaskenv
+    - from files
+    - from environment
+    - alternate settings for testing, dev, prod
+    - init config first or logging first?
+- Logging
+    - logs are probably cheap, don't prematurely optimize
+    - centralize your logs to an aggregation service
+    - .info logs are show/saved by default
+    - cli output is plain text
+    - saved logs are JSON
+    - saved logs go to syslog, let devops handle the aggregation
+- Testing
+    - alternate DB URI
+    - pytest & fixtures
+- Flask-SQLAlchemy
+    - ext init
+    - fixtures to get db to ensure app context
+- Celery
+    - refresh process pool

@@ -13,24 +13,19 @@
 
 version: '2'
 services:
-  flog-pg:
+  flog2-pg:
       image: postgres:12-alpine
-      container_name: flog-pg
+      container_name: flog2-pg
       ports:
         - '127.0.0.1:54321:5432'
       environment:
-        # Kk for flog dev, potentially UNSAFE in other applications.  Don't blindly copy & paste
+        # Kk for flog2 dev, potentially UNSAFE in other applications.  Don't blindly copy & paste
         # without considering implications.
         POSTGRES_HOST_AUTH_METHOD: trust
         # Could use this instead with a strong password if working outside a dev env
         # POSTGRES_PASSWORD: password
-  flog-rabbitmq:
+  flog2-rabbitmq:
     image: rabbitmq:3.8-alpine
-    container_name: flog-rabbitmq
+    container_name: flog2-rabbitmq
     ports:
       - '127.0.0.1:56721:5672'
-  flog-redis:
-    image: redis:5-alpine
-    container_name: flog-redis
-    ports:
-      - '127.0.0.1:63791:6379'

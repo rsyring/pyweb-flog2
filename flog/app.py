@@ -1,32 +1,77 @@
-import click
+import logging
+import pathlib
+from os import environ
 
-from flask import Flask
+import click
+import flask
 from flask.cli import FlaskGroup
-from flask_sqlalchemy import SQLAlchemy
 
 import flog.cli
+import flog.ext
+from flog.libs.config import init_config
+from flog.libs.logging import init_logging
+from flog.libs.testing import CLIRunner
+import flog.views
 
-db = SQLAlchemy()
+_app_name = 'flog'
+_root_path = pathlib.Path(__file__).parent
 
-
-def create_app():
-    # Circular imports require this import to go inside the function
-    from flog import views
-
-    app = Flask(__name__)
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = \
-        'postgresql://postgres:password@localhost:54321/postgres'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    db.init_app(app)
-
-    app.register_blueprint(views.public)
-    app.register_blueprint(flog.cli.cli_bp)
-
-    return app
+log = logging.getLogger(__name__)
 
 
-@click.group(cls=FlaskGroup, create_app=create_app)
-def cli():
-    """Management script for the Wiki application."""
+class FlogApp(flask.Flask):
+    test_cli_runner_class = CLIRunner
+
+    @classmethod
+    def create(cls, init_app=True, testing=False, **kwargs):
+        """
+            For CLI app init blueprints but not config b/c we want to give the calling CLI group
+            the ability to set values from the command line args/options before configuring the
+            app. But if we don't init the blueprints right away, then the CLI doesn't know
+            anything about the cli groups & commands added by blueprints.
+        """
+        if testing:
+            environ['FLASK_ENV'] = 'testing'
+
+        app = cls(_app_name, root_path=_root_path, **kwargs)
+        app.testing = testing
+
+        app.init_blueprints()
+        if init_app:
+            app.init_app()
+
+        return app
+
+    def init_blueprints(self):
+        self.register_blueprint(flog.cli.cli_bp)
+        self.register_blueprint(flog.views.public)
+
+    def init_app(self, log_level='info', with_sentry=False):
+        init_config(self)
+
+        if not self.testing:
+            init_logging(log_level, self.name)
+
+        if with_sentry:
+            assert not self.testing, 'Sentry should not be enabled during testing.'
+            sentry_dsn = self.config.get('SENTRY_DSN')
+            if not sentry_dsn:
+                raise ValueError('Sentry DSN expected but not configured.')
+            else:
+                import sentry_sdk
+                sentry_sdk.init(sentry_dsn)
+
+        flog.ext.init_ext(self)
+
+
+@click.group(cls=FlaskGroup, create_app=lambda _: FlogApp.create(init_app=False))
+@click.option('--quiet', 'log_level', flag_value='quiet', help='Hide info level log messages')
+@click.option('--info', 'log_level', flag_value='info', default=True,
+    help='Show info level log messages (default)')
+@click.option('--debug', 'log_level', flag_value='debug', help='Show debug level log messages')
+@click.option('--with-sentry', is_flag=True, default=False,
+    help='Enable Sentry (usually only in production)')
+@flask.cli.pass_script_info
+def cli(scriptinfo, log_level, with_sentry):
+    app = scriptinfo.load_app()
+    app.init_app(log_level, with_sentry)

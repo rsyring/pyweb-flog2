@@ -1,28 +1,20 @@
-from unittest import mock
-
-import responses
+import subprocess
 
 
 class TestCLI:
 
-    @responses.activate
-    def test_requests_mock(self, app):
-        responses.add(
-            responses.GET,
-            'https://hacker-news.firebaseio.com/v0/user/rsyring.json',
-            json={'karma': 394, 'submitted': [1, 2, 3]}
-        )
+    def test_hello(self, cli):
+        result = cli.invoke('hello')
+        assert result.output == 'Hello, World!\n'
 
-        runner = app.test_cli_runner()
+        result = cli.invoke('hello', 'pyweb')
+        assert result.output == 'Hello, pyweb!\n'
 
-        result = runner.invoke(args=['hn-profile', 'rsyring'], catch_exceptions=False)
-        assert 'HackerNews user rsyring has 3 submissions and 394 karma.\n' == result.output
+    def test_log_level_option(self, script_args):
+        # Can't use the runner to test this because pytest hijacks the log output.  So, just
+        # fork out a process to call the application like we would in a script.
+        args = script_args + ['--debug', 'hello']
+        result = subprocess.run(args, capture_output=True)
 
-    @mock.patch('flog.libs.hackernews.User.get_json', autospec=True, spec_set=True)
-    def test_library_mock(self, m_get_json, app):
-        m_get_json.return_value = {'karma': 123, 'submitted': [1, 2, 3]}
-
-        runner = app.test_cli_runner()
-
-        result = runner.invoke(args=['hn-profile', 'rsyring'], catch_exceptions=False)
-        assert 'HackerNews user rsyring has 3 submissions and 123 karma.\n' == result.output
+        assert result.stdout == b'Hello, World!\n'
+        assert b'DEBUG - flog.cli - cli debug logging example' in result.stderr

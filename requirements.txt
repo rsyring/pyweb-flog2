@@ -1,15 +1,14 @@
 # app
-arrow
-dramatiq[rabbitmq, redis, watch]
+appdirs
 flask
 flask_sqlalchemy
 psycopg2-binary
-requests
+python-dotenv
+python-json-logger
+sqlalchemy_utils
 
 # testing
-mixer
 pytest
-responses
 
 # dev environment
 flake8
