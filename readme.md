@@ -1,6 +1,11 @@
 Flog
 ====
 
+[![CircleCI](https://circleci.com/gh/rsyring/pyweb-flog2.svg?style=svg)](https://circleci.com/gh/rsyring/pyweb-flog2)
+[![codecov](https://codecov.io/gh/rsyring/pyweb-flog2/branch/master/graph/badge.svg)](https://codecov.io/gh/rsyring/pyweb-flog2)
+
+
+
 Run Tests
 ----------------------------------
 
@@ -23,7 +28,7 @@ Features
 - General
     - ease of starting tests & dev
     - docker-compose
-    - compile requirements
+    - freeze requirements using pip-tools
         - tox runs both frozen and current libs
 - App factory pattern
     - blueprints (web & CLI)
