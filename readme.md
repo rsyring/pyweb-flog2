@@ -1,12 +1,19 @@
 Flog
 ====
 
-Install Dependencies & Run Tests
+Run Tests
 ----------------------------------
 
 ```
+# first
 $ docker-compose up -d
+
+# then
+$ tox
+
+# or (this is also how to get a dev environment setup)
 $ pip install -r requirements.txt
+$ pip install -e .
 $ pytest
 ```
 
@@ -14,12 +21,13 @@ Features
 --------
 
 - General
-    - requirements
-    - docker-compose
-    - tox & CI
     - ease of starting tests & dev
+    - docker-compose
+    - compile requirements
+        - tox runs both frozen and current libs
 - App factory pattern
     - blueprints (web & CLI)
+    - use .ext module to avoid circular imports
 - CLI Integration
     - custom command
     - two-phase init for blueprints
@@ -39,6 +47,7 @@ Features
 - Testing
     - alternate DB URI
     - pytest & fixtures
+    - custom pytest.ini for tox/ci
 - Flask-SQLAlchemy
     - ext init
     - fixtures to get db to ensure app context

@@ -1,0 +1,16 @@
+# app
+appdirs
+flask
+flask_sqlalchemy
+psycopg2-binary
+python-dotenv
+python-json-logger
+sqlalchemy_utils
+
+# testing
+pytest
+pytest-cov
+flake8
+
+# dev environment
+pip-tools
