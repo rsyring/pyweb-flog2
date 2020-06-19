@@ -14,7 +14,7 @@ class TestCLI:
         # Can't use the runner to test this because pytest hijacks the log output.  So, just
         # fork out a process to call the application like we would in a script.
         args = script_args + ['--debug', 'hello']
-        result = subprocess.run(args, capture_output=True, check=True)
+        result = subprocess.run(args, capture_output=True)
 
-        assert result.stdout == b'Hello, World!\n'
+        assert result.stdout == b'Hello, World!\n', result.stderr
         assert b'DEBUG - flog.cli - cli debug logging example' in result.stderr
